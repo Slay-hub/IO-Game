@@ -5,6 +5,7 @@
     <meta name='viewport' content='width=device-width initial-scale=1.0'>
     <title></title>
     <link rel="stylesheet" href="/style.css" />
+	
     <script defer src="/bundle.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <style>
@@ -12,11 +13,15 @@
       </style>
   </head>
   <body>
-      <div>
+  <script> 
+  function testFunction(){
+  document.getElementById("test").innerHTML = "Cya Nerds";
+  }
+	</script>
+      <div >
           <canvas id="myCanvas" width="480" height="320"></canvas>
        </div>
-      
-       <p>This is a test</p>
-
+       <p id="test">This is a test</p>
+		<button onclick="testFunction()"> Press me! </button>
   </body>
 </html>

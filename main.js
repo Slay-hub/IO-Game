@@ -50,7 +50,7 @@ function Player(x, y, w, h) {
   this.draw = function() {
 
     ctx.beginPath();
-    ctx.rect(this.posx, this.poxy, this.width, this.height);
+    ctx.rect(this.posx, this.posy, this.width, this.height);
     ctx.strokeStyle = "red";
     ctx.stroke();
     ctx.closePath();

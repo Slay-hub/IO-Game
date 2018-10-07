@@ -1,0 +1,23 @@
+{
+  "name": "box",
+  "version": "1.0.0",
+  "description": "moving box",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.16.3",
+    "socket.io": "^2.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "example",
+    "box"
+  ],
+  "author": "me",
+  "license": "ISC",
+  "engines": {
+    "node": "8.12.0"
+  }
+}

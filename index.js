@@ -61,7 +61,7 @@ io.on('connection', function(socket) {
     delete players[socket.id];
        for(var i = 0; i < socket_list.length; i++) { 
         if(socket.id == socket_list[i]){
-          delete socket_list[i];
+          socket_list.splice(i, 1);
           i=socket_list.length+2;
         }
        }

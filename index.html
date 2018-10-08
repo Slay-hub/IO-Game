@@ -3,25 +3,19 @@
   <head>
     <meta charset='utf-8'>
     <meta name='viewport' content='width=device-width initial-scale=1.0'>
-    <title></title>
-    <link rel="stylesheet" href="/style.css" />
-	
-    <script defer src="/bundle.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
+    <title>MovingBox</title>
     <style>
         * { padding: 0; margin: 0; }
+        canvas { background: lightblue; }
+
       </style>
   </head>
   <body>
-  <script> 
-  function testFunction(){
-  document.getElementById("test").innerHTML = "Cya Nerds";
-  }
-	</script>
-      <div >
-          <canvas id="myCanvas" width="480" height="320"></canvas>
-       </div>
-       <p id="test">This is a test</p>
-		<button onclick="testFunction()"> Press me! </button>
+<canvas id="myCanvas" width="1280" height="720"></canvas>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/main.js"></script>
+
+
   </body>
 </html>

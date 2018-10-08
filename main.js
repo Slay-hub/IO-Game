@@ -1,7 +1,7 @@
 var socket = io();
 
 
-var movement = {
+var input = {
   up: false,
   down: false,
   left: false,
@@ -64,6 +64,7 @@ Objects
   };
 
 }
+
 */
 /***************
 Input handling
@@ -77,79 +78,45 @@ function keyDownHandler(e) {
 
   //Directional keys
   if(e.keyCode == 39 ){
-    movement.right = true;
+    input.right = true;
   }
   if(e.keyCode == 38){
-    movement.up = true;
+    input.up = true;
   }
   if(e.keyCode == 40){
-    movement.down = true;
+    input.down = true;
   }
   if (e.keyCode == 37){
-    movement.left = true;
+    input.left = true;
   }
 
 }
+
 function keyUpHandler(e) {
 
   //Directional keys
   if(e.keyCode == 39) {
-    movement.right = false;
+    input.right = false;
   }
   if(e.keyCode == 38){
-    movement.up = false;
+    input.up = false;
   }
   if(e.keyCode == 40){
-    movement.down = false;
+    input.down = false;
   }
   if(e.keyCode == 37) {
-    movement.left = false;
+    input.left = false;
   }
 
 }
 
 /***************
-Game Loop
+Server comm
 ***************/
-
-/*function gameLogic() {
-
-  //allow each entity to act
-  entities.forEach(function(ent){
-    ent.act();
-  });
-
-}
-
-function gameDraw() {
-
-  //clear the canvas
-
-  //draw background and obstacles
-
-  //draw players and other entities
-  entities.forEach(function(ent){
-    ent.draw();
-  });
-
-}
-
-function gameLoop() {
-
-  //handle logic
-  gameLogic();
-
-  //handle drawing
-  gameDraw();
-}
-*/
-//setInterval(gameLoop, 100);
-
-
 
 socket.emit('new player');
 setInterval(function() {
-  socket.emit('movement', movement);
+  socket.emit('input', input);
 }, 1000 / 60);
 
 socket.on('state', function(players) {

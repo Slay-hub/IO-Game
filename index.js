@@ -12,24 +12,9 @@ app.get('/main.js', function(req, res){
   res.sendFile(__dirname + '/main.js');
 });
 
-
-io.on('connection', function(socket){
-  socket.on('chat message', function(msg){
-    io.emit('chat message', msg);
-  });
-});
-
 http.listen(port, function(){
   console.log('listening on *:' + port);
 });
-
-
-
-// Add the WebSocket handlers
-io.on('connection', function(socket) {
-});
-
-
 
 var players = {};
 io.on('connection', function(socket) {
@@ -39,7 +24,7 @@ io.on('connection', function(socket) {
       y: 300
     };
   });
-  socket.on('movement', function(data) {
+  socket.on('input', function(data) {
     var player = players[socket.id] || {};
     if (data.left) {
       player.x -= 5;
@@ -54,7 +39,7 @@ io.on('connection', function(socket) {
       player.y += 5;
     }
   });
- socket.on('disconnect', function() {
+  socket.on('disconnect', function() {
     delete players[socket.id];
   });
 });

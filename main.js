@@ -1,16 +1,17 @@
 var socket = io();
 
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
 
 var input = {
   up: false,
   down: false,
   left: false,
-  right: false
+  right: false,
+  canvasx: canvas.width,
+  canvasy: canvas.height
 }
 
-
-var canvas = document.getElementById("myCanvas");
-var ctx = canvas.getContext("2d");
 //var entities = [new Player(605, 70, 70, 70)];
 
 /***************

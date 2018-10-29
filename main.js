@@ -1,16 +1,18 @@
 var socket = io();
 
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
 
 var input = {
   up: false,
   down: false,
   left: false,
-  right: false
+  right: false,
+  direction: 0,
+  canvasx: canvas.width,
+  canvasy: canvas.height
 }
 
-
-var canvas = document.getElementById("myCanvas");
-var ctx = canvas.getContext("2d");
 //var entities = [new Player(605, 70, 70, 70)];
 
 /***************
@@ -79,6 +81,7 @@ function keyDownHandler(e) {
   //Directional keys
   if(e.keyCode == 39 ){
     input.right = true;
+    input.direction=1;
   }
   if(e.keyCode == 38){
     input.up = true;
@@ -88,6 +91,7 @@ function keyDownHandler(e) {
   }
   if (e.keyCode == 37){
     input.left = true;
+    input.direction=0;
   }
 
 }
@@ -97,6 +101,8 @@ function keyUpHandler(e) {
   //Directional keys
   if(e.keyCode == 39) {
     input.right = false;
+    input.direction=1;
+
   }
   if(e.keyCode == 38){
     input.up = false;
@@ -106,6 +112,8 @@ function keyUpHandler(e) {
   }
   if(e.keyCode == 37) {
     input.left = false;
+    input.direction=0;
+
   }
 
 }
@@ -116,10 +124,8 @@ Server comm
 
 socket.emit('new player');
 setInterval(function() {
-  socket.emit('input', input); 
+  socket.emit('input', input);
 }, 1000 / 60);
-
-
 
 socket.on('state', function(players) {
 

@@ -8,6 +8,7 @@ var input = {
   down: false,
   left: false,
   right: false,
+  direction: 0,
   canvasx: canvas.width,
   canvasy: canvas.height
 }
@@ -80,6 +81,7 @@ function keyDownHandler(e) {
   //Directional keys
   if(e.keyCode == 39 ){
     input.right = true;
+    input.direction=1;
   }
   if(e.keyCode == 38){
     input.up = true;
@@ -89,6 +91,7 @@ function keyDownHandler(e) {
   }
   if (e.keyCode == 37){
     input.left = true;
+    input.direction=0;
   }
 
 }
@@ -98,6 +101,8 @@ function keyUpHandler(e) {
   //Directional keys
   if(e.keyCode == 39) {
     input.right = false;
+    input.direction=1;
+
   }
   if(e.keyCode == 38){
     input.up = false;
@@ -107,6 +112,8 @@ function keyUpHandler(e) {
   }
   if(e.keyCode == 37) {
     input.left = false;
+    input.direction=0;
+
   }
 
 }

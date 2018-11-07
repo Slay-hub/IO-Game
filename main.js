@@ -8,6 +8,7 @@ var input = {
   down: false,
   left: false,
   right: false,
+  space: false,
   direction: 0,
   canvasx: canvas.width,
   canvasy: canvas.height
@@ -93,7 +94,9 @@ function keyDownHandler(e) {
     input.left = true;
     input.direction=0;
   }
-
+  if(e.keyCode == 32) {
+    input.space = true;
+  }
 }
 
 function keyUpHandler(e) {
@@ -115,7 +118,9 @@ function keyUpHandler(e) {
     input.direction=0;
 
   }
-
+  if(e.keyCode == 32) {
+    input.space = false;
+  }
 }
 
 /***************
@@ -127,7 +132,7 @@ setInterval(function() {
   socket.emit('input', input);
 }, 1000 / 60);
 
-socket.on('state', function(players) {
+socket.on('state', function(players,bullets) {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   for (var id in players) {
@@ -136,5 +141,12 @@ socket.on('state', function(players) {
     ctx.rect(player.x, player.y,100,100);
     ctx.strokeStyle = "red";
     ctx.stroke();
+    ctx.closePath();
+
   }
-});
+    for (var id in bullets) {
+    var bullet = bullets[id];
+    ctx.beginPath();
+    ctx.fillRect(bullet.x, bullet.y,10,10);
+    ctx.closePath();
+}});

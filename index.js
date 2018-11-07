@@ -66,10 +66,8 @@ io.on('connection', function(socket) { //changed placement so i don't need to mo
             socketID: socket.id
           } //right instruction
         }
-
       }
-
-    } //space instruction
+    }//space instruction
 
     var i;
     var j;
@@ -118,5 +116,5 @@ io.on('connection', function(socket) { //changed placement so i don't need to mo
   });
 });
 setInterval(function() {
-  io.sockets.emit('state', players);
+  io.sockets.emit('state', players, bullets);
 }, 1000 / 60);

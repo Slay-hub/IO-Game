@@ -16,6 +16,7 @@ http.listen(port, function(){
 });
 
 var players = {};
+var bullets = {};
 var socket_list = new Array();
 var placementX=0;
 var placementY=0;
@@ -48,6 +49,27 @@ io.on('connection', function(socket) { //changed placement so i don't need to mo
     if (data.down && player.y < data.canvasy- 100) {
       player.y += 5;
     }
+    if(data.space){
+      //add code for shooting and check if a bullet is already on screen
+      //use data.direction for which side to shoot bullet on, 0 for left, 1 for right
+      if(bullets[socket.id] == null){
+        if(data.direction==0){
+          bullets[socket.id] = {
+            x: player.x-20,
+            y: player.y+50,
+            socketID: socket.id
+          } // left instruction
+        } else {
+          bullets[socket.id]={
+            x: player.x+120,
+            y: player.y+50,
+            socketID: socket.id
+          } //right instruction
+        }
+
+      }
+
+    } //space instruction
 
     var i;
     var j;

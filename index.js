@@ -57,17 +57,35 @@ io.on('connection', function(socket) { //changed placement so i don't need to mo
           bullets[socket.id] = {
             x: player.x-20,
             y: player.y+50,
+            direction: 0,
             socketID: socket.id
           } // left instruction
         } else {
           bullets[socket.id]={
             x: player.x+120,
             y: player.y+50,
+            direction: 1,
             socketID: socket.id
           } //right instruction
         }
       }
-    }//space instruction
+
+    }//spacebar instruction
+
+    //bullet movement
+    if(bullets[socket.id] != null){
+      if(bullets[socket.id].direction == 0){
+        bullets[socket.id].x-=5;
+      } else if(bullets[socket.id].direction == 1){
+        bullets[socket.id].x+=5;
+      }
+      //bullet collision
+      if(bullets[socket.id].x > data.canvasx-20 || bullets[socket.id].x < 0){
+         delete bullets[socket.id];
+      }
+
+    }
+
 
     var i;
     var j;

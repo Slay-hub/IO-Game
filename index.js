@@ -24,6 +24,7 @@ io.on('connection', function(socket) {
   //socket_list.push(socket.id);
   let room;
   let players = {};
+  let bullets = {};
   //increase roomno if 2 clients are present in a room
   socket.on('join', function() {
     if(io.nsps['/'].adapter.rooms["room"+roomno] && io.nsps['/'].adapter.rooms["room"+roomno].length > 1) roomno++;
@@ -57,7 +58,42 @@ io.on('connection', function(socket) {
     if (data.down && player.y < data.canvasy- 100) {
       player.y += 5;
     }
+    if(data.space){
+      //add code for shooting and check if a bullet is already on screen
+      //use data.direction for which side to shoot bullet on, 0 for left, 1 for right
+      if(bullets[socket.id] == null){
+        if(data.direction==0){
+          bullets[socket.id] = {
+            x: player.x-20,
+            y: player.y+50,
+            direction: 0,
+            socketID: socket.id
+          } // left instruction
+        } else {
+          bullets[socket.id]={
+            x: player.x+120,
+            y: player.y+50,
+            direction: 1,
+            socketID: socket.id
+          } //right instruction
+        }
+      }
 
+    }//spacebar instruction
+
+    //bullet movement
+    if(bullets[socket.id] != null){
+      if(bullets[socket.id].direction == 0){
+        bullets[socket.id].x-=5;
+      } else if(bullets[socket.id].direction == 1){
+        bullets[socket.id].x+=5;
+      }
+      //bullet collision
+      if(bullets[socket.id].x > data.canvasx-20 || bullets[socket.id].x < 0){
+         delete bullets[socket.id];
+      }
+
+    }
     var i;
     var j;
 
@@ -101,6 +137,6 @@ io.on('connection', function(socket) {
 
   });
   setInterval(function() {
-  io.to(room).emit('state', players);
+  io.to(room).emit('state', players,bullets);
 }, 1000 / 60);
 });

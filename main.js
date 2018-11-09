@@ -121,11 +121,14 @@ function keyUpHandler(e) {
 /***************
 Server comm
 ***************/
-
+socket.emit('join');
 socket.emit('new player');
-setInterval(function() {
+
+function gamestate() {
   socket.emit('input', input);
-}, 1000 / 60);
+  requestAnimationFrame(gamestate);
+};
+requestAnimationFrame(gamestate);
 
 socket.on('state', function(players) {
 

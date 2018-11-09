@@ -15,13 +15,22 @@ http.listen(port, function(){
   console.log('listening on *:' + port);
 });
 
-var players = {};
 var socket_list = new Array();
 var placementX=0;
 var placementY=0;
+var roomno = 1;
 
-io.on('connection', function(socket) { //changed placement so i don't need to move the box before opening it in a new tab
+io.on('connection', function(socket) { 
   //socket_list.push(socket.id);
+  let room;
+  let players = {};
+  //increase roomno if 2 clients are present in a room
+  socket.on('join', function() {
+    if(io.nsps['/'].adapter.rooms["room"+roomno] && io.nsps['/'].adapter.rooms["room"+roomno].length > 1) roomno++;
+    room = `room${roomno}`;
+    socket.join(room);
+    console.log(room);
+  });
   placementX+=200;
   if(placementX>1000){
     placementX=200;
@@ -52,7 +61,7 @@ io.on('connection', function(socket) { //changed placement so i don't need to mo
     var i;
     var j;
 
-    //if(socket_list.length>1){
+    /*(//if(socket_list.length>1){
     for(var i = 0; i < socket_list.length; i++) { 
       for(var j = 0; j < socket_list.length; j++) { 
       var collide1 = players[socket_list[i]]; //|| {};
@@ -78,10 +87,7 @@ io.on('connection', function(socket) { //changed placement so i don't need to mo
       }
     }
   }
-
-
-  //}//end of if
-  
+*/  
   });
   socket.on('disconnect', function() {
     var i;
@@ -94,7 +100,7 @@ io.on('connection', function(socket) { //changed placement so i don't need to mo
        }
 
   });
-});
-setInterval(function() {
-  io.sockets.emit('state', players);
+  setInterval(function() {
+  io.to(room).emit('state', players);
 }, 1000 / 60);
+});

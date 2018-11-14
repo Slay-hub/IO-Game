@@ -15,23 +15,14 @@ http.listen(port, function(){
   console.log('listening on *:' + port);
 });
 
+var players = {};
+var bullets = {};
 var socket_list = new Array();
 var placementX=0;
 var placementY=0;
-var roomno = 1;
 
-io.on('connection', function(socket) { 
+io.on('connection', function(socket) { //changed placement so i don't need to move the box before opening it in a new tab
   //socket_list.push(socket.id);
-  let room;
-  let players = {};
-  let bullets = {};
-  //increase roomno if 2 clients are present in a room
-  socket.on('join', function() {
-    if(io.nsps['/'].adapter.rooms["room"+roomno] && io.nsps['/'].adapter.rooms["room"+roomno].length > 1) roomno++;
-    room = `room${roomno}`;
-    socket.join(room);
-    console.log(room);
-  });
   placementX+=200;
   if(placementX>1000){
     placementX=200;
@@ -93,11 +84,33 @@ io.on('connection', function(socket) {
          delete bullets[socket.id];
       }
 
+      for(var i = 0; i < socket_list.length; i++) {
+        for(var j = 0; j < socket_list.length; j++) { 
+         
+         /*if(socket_list[j] == socket_list[i]){
+            break;
+          }*/
+
+          if(bullets[socket_list[i]] != null){
+            if(bullets[socket_list[i]].x+10 >= players[socket_list[j]].x && bullets[socket_list[i]].x <= players[socket_list[j]].x+100 && bullets[socket_list[i]].y+10 >= players[socket_list[j]].y && bullets[socket_list[i]].y <= players[socket_list[j]].y+100){
+              delete bullets[socket_list[i]];
+            }
+            if(players[socket_list[i]].x >= bullets[socket_list[j]]+10 && players[socket_list[i]].x+100 >= bullets[socket_list[j]].x && players[socket_list[i]].y <= bullets[socket_list[j]].y+10 && players[socket_list[i]].y+100 >= bullets[socket_list[j]].y){
+              delete bullets[socket_list[j]];
+            }
+
+          } 
+
+        } //end of j for
+      } //end of i for
+
     }
+
+
     var i;
     var j;
 
-    /*(//if(socket_list.length>1){
+    //if(socket_list.length>1){
     for(var i = 0; i < socket_list.length; i++) { 
       for(var j = 0; j < socket_list.length; j++) { 
       var collide1 = players[socket_list[i]]; //|| {};
@@ -123,11 +136,17 @@ io.on('connection', function(socket) {
       }
     }
   }
-*/  
+
+
+  //}//end of if
+  
   });
   socket.on('disconnect', function() {
     var i;
     delete players[socket.id];
+    if(bullets[socket.id] != null){
+      delete bullets[socket.id];
+    }
        for(var i = 0; i < socket_list.length; i++) { 
         if(socket.id == socket_list[i]){
           socket_list.splice(i, 1);
@@ -136,7 +155,7 @@ io.on('connection', function(socket) {
        }
 
   });
-  setInterval(function() {
-  io.to(room).emit('state', players,bullets);
-}, 1000 / 60);
 });
+setInterval(function() {
+  io.sockets.emit('state', players, bullets);
+}, 1000 / 60);

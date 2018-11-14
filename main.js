@@ -116,6 +116,7 @@ function keyUpHandler(e) {
   if(e.keyCode == 37) {
     input.left = false;
     input.direction=0;
+
   }
   if(e.keyCode == 32) {
     input.space = false;
@@ -125,14 +126,11 @@ function keyUpHandler(e) {
 /***************
 Server comm
 ***************/
-socket.emit('join');
-socket.emit('new player');
 
-function gamestate() {
+socket.emit('new player');
+setInterval(function() {
   socket.emit('input', input);
-  requestAnimationFrame(gamestate);
-};
-requestAnimationFrame(gamestate);
+}, 1000 / 60);
 
 socket.on('state', function(players,bullets) {
 
@@ -143,6 +141,8 @@ socket.on('state', function(players,bullets) {
     ctx.rect(player.x, player.y,100,100);
     ctx.strokeStyle = "red";
     ctx.stroke();
+    ctx.closePath();
+
   }
     for (var id in bullets) {
     var bullet = bullets[id];

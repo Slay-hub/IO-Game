@@ -75,14 +75,34 @@ io.on('connection', function(socket) { //changed placement so i don't need to mo
     //bullet movement
     if(bullets[socket.id] != null){
       if(bullets[socket.id].direction == 0){
-        bullets[socket.id].x-=5;
+        bullets[socket.id].x-=1;
       } else if(bullets[socket.id].direction == 1){
-        bullets[socket.id].x+=5;
+        bullets[socket.id].x+=1;
       }
       //bullet collision
       if(bullets[socket.id].x > data.canvasx-20 || bullets[socket.id].x < 0){
          delete bullets[socket.id];
       }
+
+      for(var i = 0; i < socket_list.length; i++) {
+        for(var j = 0; j < socket_list.length; j++) { 
+         
+         /*if(socket_list[j] == socket_list[i]){
+            break;
+          }*/
+
+          if(bullets[socket_list[i]] != null){
+            if(bullets[socket_list[i]].x+10 >= players[socket_list[j]].x && bullets[socket_list[i]].x <= players[socket_list[j]].x+100 && bullets[socket_list[i]].y+10 >= players[socket_list[j]].y && bullets[socket_list[i]].y <= players[socket_list[j]].y+100){
+              delete bullets[socket_list[i]];
+            }
+            if(players[socket_list[i]].x >= bullets[socket_list[j]]+10 && players[socket_list[i]].x+100 >= bullets[socket_list[j]].x && players[socket_list[i]].y <= bullets[socket_list[j]].y+10 && players[socket_list[i]].y+100 >= bullets[socket_list[j]].y){
+              delete bullets[socket_list[j]];
+            }
+
+          } 
+
+        } //end of j for
+      } //end of i for
 
     }
 
@@ -124,6 +144,9 @@ io.on('connection', function(socket) { //changed placement so i don't need to mo
   socket.on('disconnect', function() {
     var i;
     delete players[socket.id];
+    if(bullets[socket.id] != null){
+      delete bullets[socket.id];
+    }
        for(var i = 0; i < socket_list.length; i++) { 
         if(socket.id == socket_list[i]){
           socket_list.splice(i, 1);

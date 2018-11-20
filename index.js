@@ -139,18 +139,27 @@ unneeded so commented out*/
 
       if(players[socket_list[i]].x+100 >= players[socket_list[j]].x && players[socket_list[i]].x <= players[socket_list[j]].x+100 && players[socket_list[i]].y+100 >= players[socket_list[j]].y && players[socket_list[i]].y <= players[socket_list[j]].y+100){
         //change what you want collision to do here (box 1 hits box 2)
-        collide1.x=200;
-        collide1.y=200;
-        collide2.x=400;
-        collide2.y=400;
+        if(i<j){
+          delete players[socket_list[i]];
+          socket_list.splice(i,1);
+          delete players[socket_list[j-1]];
+          socket_list.splice(j-1,1);
+        } else {
+          delete players[socket_list[i]];
+          socket_list.splice(i,1);
+          delete players[socket_list[j]];
+          socket_list.splice(j,1);
+        }
+
       }
-      if(players[socket_list[j]].x >= players[socket_list[i]].x && players[socket_list[j]].x <= players[socket_list[i]].x+100 && players[socket_list[j]].y >= players[socket_list[i]].y && players[socket_list[j]].y <= players[socket_list[i]].y+100){
+      /*if(players[socket_list[j]].x >= players[socket_list[i]].x && players[socket_list[j]].x <= players[socket_list[i]].x+100 && players[socket_list[j]].y >= players[socket_list[i]].y && players[socket_list[j]].y <= players[socket_list[i]].y+100){
          //change what you want collision to do here (box 2 hits box 1)
         collide1.x=200;
         collide1.y=200;
         collide2.x=400;
         collide2.y=400;
-      }
+      }*/
+
     }
   }
 

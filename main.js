@@ -149,4 +149,6 @@ socket.on('state', function(players,bullets) {
     ctx.beginPath();
     ctx.fillRect(bullet.x, bullet.y,10,10);
     ctx.closePath();
-}});
+  }
+
+});

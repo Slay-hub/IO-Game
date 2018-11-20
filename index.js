@@ -31,7 +31,8 @@ io.on('connection', function(socket) { //changed placement so i don't need to mo
   socket.on('new player', function() {
     players[socket.id] = {
       x: placementX,
-      y: placementY
+      y: placementY,
+      lives: 3
     };
       socket_list.push(socket.id);
   });
@@ -93,13 +94,29 @@ io.on('connection', function(socket) { //changed placement so i don't need to mo
 
           if(bullets[socket_list[i]] != null){
             if(bullets[socket_list[i]].x+10 >= players[socket_list[j]].x && bullets[socket_list[i]].x <= players[socket_list[j]].x+100 && bullets[socket_list[i]].y+10 >= players[socket_list[j]].y && bullets[socket_list[i]].y <= players[socket_list[j]].y+100){
+              players[socket_list[j]].lives -=1;
               delete bullets[socket_list[i]];
-            }
-            if(players[socket_list[i]].x >= bullets[socket_list[j]]+10 && players[socket_list[i]].x+100 >= bullets[socket_list[j]].x && players[socket_list[i]].y <= bullets[socket_list[j]].y+10 && players[socket_list[i]].y+100 >= bullets[socket_list[j]].y){
-              delete bullets[socket_list[j]];
-            }
+              
+              if(players[socket_list[j]].lives == 0){
+                delete players[socket_list[j]];
+                socket_list.splice(j,1);
+              }
 
-          } 
+            } // end of first if
+            
+     /*       if(players[socket_list[i]].x >= bullets[socket_list[j]]+10 && players[socket_list[i]].x+100 >= bullets[socket_list[j]].x && players[socket_list[i]].y <= bullets[socket_list[j]].y+10 && players[socket_list[i]].y+100 >= bullets[socket_list[j]].y){
+              players[socket_list[i]].lives -=1;
+              delete bullets[socket_list[j]];
+
+              if(players[socket_list[i]].lives == 0){
+                delete players[socket_list[i]];
+                socket_list.splice(i,1);
+              }
+
+            } // end of second if
+unneeded so commented out*/
+
+          } // end of null check 
 
         } //end of j for
       } //end of i for
@@ -136,7 +153,6 @@ io.on('connection', function(socket) { //changed placement so i don't need to mo
       }
     }
   }
-
 
   //}//end of if
   
